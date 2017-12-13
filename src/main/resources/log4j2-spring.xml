@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+    <Properties>
+        <Property name="log-path">logs</Property>
+    </Properties>
+    <Appenders>
+        <Console name="standard" target="SYSTEM_OUT">
+        	<BurstFilter level="INFO" rate="5" maxBurst="100"/>
+            <PatternLayout>
+                <pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{1} - %msg%n
+                </pattern>>
+            </PatternLayout>
+        </Console>
+	    <RollingFile name="emarlog">
+	    	<FileName>${log-path}/spring-boot-consumer-stream.log</FileName>
+	        <FilePattern>${log-path}/spring-boot-consumer-stream.log.%d{yyyy-MM-dd}</FilePattern>
+	        <PatternLayout>
+	        	<Pattern>
+	        		%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{1} - %msg%n
+	        	</Pattern>
+	        </PatternLayout>
+	        <Policies>
+	        	<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+	        </Policies>
+	        <DefaultRolloverStrategy max="14" />
+	    </RollingFile>        
+    </Appenders>
+    <Loggers>
+        <Logger name="throughput" level="info" additivity="false">
+            <AppenderRef ref="standard"/>
+         </Logger>
+        <Root level="info">
+            <AppenderRef ref="emarlog"/>
+        </Root>
+    </Loggers>
+</Configuration>
