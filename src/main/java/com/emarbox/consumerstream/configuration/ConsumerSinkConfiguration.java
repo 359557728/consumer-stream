@@ -40,8 +40,9 @@ public class ConsumerSinkConfiguration {
 	@StreamListener
 	public void dataIngest(@Input(StreamBindableChannel.YZ_INPUT) Flux<Message<String>> yzInbound, 
 		@Input(StreamBindableChannel.GD_INPUT) Flux<Message<String>> gdInbound, 
-		@Input(StreamBindableChannel.HT_INPUT) Flux<Message<String>> htInbound) {
-		yzInbound.mergeWith(gdInbound).mergeWith(htInbound)
+		@Input(StreamBindableChannel.HT_INPUT) Flux<Message<String>> htInbound,
+		@Input(StreamBindableChannel.HZ_INPUT) Flux<Message<String>> hzInbound) {
+		yzInbound.mergeWith(gdInbound).mergeWith(htInbound).mergeWith(hzInbound)
 			.groupBy(message -> message.getHeaders().get(KafkaHeaders.RECEIVED_TOPIC))
 			.flatMap(records -> records
 				.bufferTimeout(commonConfigration.getBufferSize(), Duration.ofSeconds(commonConfigration.getBufferTime()))
@@ -116,9 +117,9 @@ public class ConsumerSinkConfiguration {
 			});
 		} else {
 			List<String> recordBatch = reocrds
-										.stream()
-										.map(Message::getPayload)
-										.collect(Collectors.toList());
+							.stream()
+							.map(Message::getPayload)
+							.collect(Collectors.toList());
 			batchProcessIgnoreTopic(topic, recordBatch, false);
 		}
 		return reocrds.size();
