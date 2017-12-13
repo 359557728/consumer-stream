@@ -11,6 +11,8 @@ public interface StreamBindableChannel {
 	
 	String HT_INPUT = "htin";
 	
+	String HZ_INPUT = "hzin";
+	
 	@Input(StreamBindableChannel.YZ_INPUT)
 	MessageChannel yzIn();
 	
