@@ -20,4 +20,7 @@ public interface StreamBindableChannel {
 	@Input(StreamBindableChannel.HT_INPUT)
 	MessageChannel htIn();
 	
+	@Input(StreamBindableChannel.HZ_INPUT)
+	MessageChannel hzIn();
+	
 }
